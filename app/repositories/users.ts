@@ -2,11 +2,16 @@ import User from '#models/user'
 
 export interface UserRepository {
   create(data: User): Promise<User>
+  findByEmail(email: string): Promise<User | null>
 }
 
 export class UserDatabase implements UserRepository {
   public async create(data: User): Promise<User> {
     const user = await User.create(data)
+    return user
+  }
+  public async findByEmail(email: string): Promise<User | null> {
+    const user = await User.findBy('email', email)
     return user
   }
 

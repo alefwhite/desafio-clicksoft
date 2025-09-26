@@ -1,3 +1,4 @@
+import ErrorEmailAlreadyExists from '#exceptions/error_email_already_exists'
 import User, { UserType } from '#models/user'
 import { UserRepository } from '../repositories/users.js'
 
@@ -13,6 +14,12 @@ export class CreateTeacherUseCase {
   constructor(private readonly userRepository: UserRepository) {}
 
   public async execute(data: CreateTeacherDTO): Promise<void> {
+    const existingUserByEmail = await this.userRepository.findByEmail(data.email)
+
+    if (existingUserByEmail) {
+      throw new ErrorEmailAlreadyExists()
+    }
+
     const user = new User()
 
     user.merge({
