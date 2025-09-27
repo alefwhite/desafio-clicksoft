@@ -1,7 +1,8 @@
 import type { HttpContext } from '@adonisjs/core/http'
 import { teacherValidator, updateTeacherValidator } from '#validators/teacher'
-import { makeUpdateTeacherService } from '../factories/usecases/make_update_teacher_use_case.js'
-import { makeCreateTeacherService } from '../factories/usecases/make_create_teacher_use_case.js'
+import { makeUpdateTeacherService } from '../factories/services/make_update_teacher.js'
+import { makeCreateTeacherService } from '../factories/services/make_create_teacher.js'
+import { makeDeleteTeacherService } from '../factories/services/make_delete_teacher.js'
 
 export default class TeacherController {
   public async store({ request, response }: HttpContext) {
@@ -39,6 +40,17 @@ export default class TeacherController {
       dateOfBirth: payload.dateOfBirth,
       registrationNumber: payload.registrationNumber,
     })
+
+    return response.status(200).noContent()
+  }
+
+  public async destroy({ auth, params, response }: HttpContext) {
+    const { id } = params
+    const teacher = auth.getUserOrFail()
+
+    const deleteTeacherService = makeDeleteTeacherService()
+
+    await deleteTeacherService.execute(id, teacher.id)
 
     return response.status(200).noContent()
   }
