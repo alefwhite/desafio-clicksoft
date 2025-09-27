@@ -36,3 +36,4 @@ router.delete('session', [SessionController, 'destroy']).use(middleware.auth({ g
 const RoomController = () => import('#controllers/room_controller')
 
 router.post('/rooms', [RoomController, 'store']).use(middleware.auth({ guards: ['api'] }))
+router.delete('/rooms/:id', [RoomController, 'destroy']).use(middleware.auth({ guards: ['api'] }))
