@@ -1,17 +1,11 @@
 import { DateTime } from 'luxon'
-import { BaseModel, column, belongsTo, manyToMany, beforeCreate } from '@adonisjs/lucid/orm'
+import { BaseModel, column, belongsTo, manyToMany } from '@adonisjs/lucid/orm'
 import type { BelongsTo, ManyToMany } from '@adonisjs/lucid/types/relations'
 import User from './user.js'
-import { randomUUID } from 'node:crypto'
 
 export default class Room extends BaseModel {
   @column({ isPrimary: true })
   declare id: string
-
-  @beforeCreate()
-  static assignUuid(user: User) {
-    user.id = randomUUID()
-  }
 
   @column({ columnName: 'room_number' })
   declare roomNumber: number

@@ -10,3 +10,12 @@ export const roomValidator = vine.compile(
     userType: vine.enum([UserType.TEACHER]),
   })
 )
+
+export const updateRoomValidator = vine.compile(
+  vine.object({
+    roomNumber: vine.number().min(1).optional(),
+    capacity: vine.number().min(1).optional(),
+    disponibility: vine.boolean().optional(),
+    createdBy: vine.string().uuid(),
+  })
+)
