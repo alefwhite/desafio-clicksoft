@@ -23,7 +23,7 @@ export class UserDatabase implements UserRepository {
   }
 
   public async findById(id: string): Promise<User | null> {
-    const user = await User.find(id)
+    const user = await User.query().where('id', id).preload('rooms').first()
     return user
   }
 

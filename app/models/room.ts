@@ -27,7 +27,7 @@ export default class Room extends BaseModel {
 
   // Relação: Room belongs to User (professor)
   @belongsTo(() => User, {
-    foreignKey: 'createdBy',
+    foreignKey: 'id',
   })
   declare teacher: BelongsTo<typeof User>
 

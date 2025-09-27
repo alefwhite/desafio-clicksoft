@@ -2,10 +2,11 @@ import { DateTime } from 'luxon'
 import { randomUUID } from 'node:crypto'
 import hash from '@adonisjs/core/services/hash'
 import { compose } from '@adonisjs/core/helpers'
-import { BaseModel, column, beforeCreate, manyToMany } from '@adonisjs/lucid/orm'
-import type { ManyToMany } from '@adonisjs/lucid/types/relations'
+import { BaseModel, column, beforeCreate, manyToMany, hasMany } from '@adonisjs/lucid/orm'
+import type { HasMany, ManyToMany } from '@adonisjs/lucid/types/relations'
 import { withAuthFinder } from '@adonisjs/auth/mixins/lucid'
 import { DbAccessTokensProvider } from '@adonisjs/auth/access_tokens'
+import Room from './room.js'
 
 export enum UserType {
   STUDENT = 'student',
@@ -50,8 +51,13 @@ export default class User extends compose(BaseModel, AuthFinder) {
   @column.dateTime({ autoCreate: true, autoUpdate: true })
   declare updatedAt: DateTime | null
 
+  @hasMany(() => Room, {
+    foreignKey: 'createdBy',
+  })
+  declare rooms: HasMany<typeof Room>
+
   // Relação: User many-to-many with Rooms (para estudantes)
-  @manyToMany(() => require('./room.js').default, {
+  @manyToMany(() => Room, {
     pivotTable: 'room_user',
     localKey: 'id',
     pivotForeignKey: 'user_id',
@@ -59,7 +65,7 @@ export default class User extends compose(BaseModel, AuthFinder) {
     pivotRelatedForeignKey: 'room_number',
     pivotTimestamps: true,
   })
-  declare rooms: ManyToMany<any>
+  declare userRooms: ManyToMany<any>
 
   static accessTokens = DbAccessTokensProvider.forModel(User)
 }
