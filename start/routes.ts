@@ -8,6 +8,7 @@
 */
 
 import router from '@adonisjs/core/services/router'
+import { middleware } from './kernel.js'
 
 router.get('/health-check', async () => {
   return {
@@ -19,3 +20,8 @@ router.get('/health-check', async () => {
 const TeacherController = () => import('#controllers/teacher_controller')
 
 router.post('/teachers', [TeacherController, 'store'])
+
+const SessionController = () => import('#controllers/session_controller')
+
+router.post('session', [SessionController, 'store'])
+router.delete('session', [SessionController, 'destroy']).use(middleware.auth({ guards: ['api'] }))
