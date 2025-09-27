@@ -2,7 +2,6 @@ import EmailAlreadyExistsException from '#exceptions/email_already_exists'
 import ForbiddenException from '#exceptions/forbidden'
 import UserNotFoundException from '#exceptions/user_not_found'
 import { UserRepository } from '../repositories/users.js'
-import { DateTime } from 'luxon'
 
 interface UpdateTeacherDTO {
   id: string
@@ -35,13 +34,11 @@ export class UpdateTeacherService {
       }
     }
 
-    teacher.merge({
+    await this.userRepository.update(id, {
       name: data.name ?? teacher.name,
       email: data.email ?? teacher.email,
-      dateOfBirth: data.dateOfBirth ? DateTime.fromJSDate(data.dateOfBirth) : teacher.dateOfBirth,
+      dateOfBirth: data.dateOfBirth ?? teacher.dateOfBirth.toJSDate(),
       registrationNumber: data.registrationNumber ?? teacher.registrationNumber,
     })
-
-    await this.userRepository.update(id, teacher)
   }
 }

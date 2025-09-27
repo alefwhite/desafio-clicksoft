@@ -5,7 +5,10 @@ export interface UserRepository {
   findByEmail(email: string): Promise<User | null>
   findById(id: string): Promise<User | null>
   findByRegistrationNumber(registrationNumber: number): Promise<User | null>
-  update(id: string, data: User): Promise<void>
+  update(
+    id: string,
+    data: { name: string; email: string; dateOfBirth: Date; registrationNumber: number }
+  ): Promise<void>
   delete(id: string): Promise<void>
 }
 
@@ -29,8 +32,16 @@ export class UserDatabase implements UserRepository {
     return user
   }
 
-  public async update(id: string, data: User): Promise<void> {
-    await User.query().where('id', id).update(data)
+  public async update(
+    id: string,
+    data: { name: string; email: string; dateOfBirth: Date; registrationNumber: number }
+  ): Promise<void> {
+    await User.query().where('id', id).update({
+      name: data.name,
+      email: data.email,
+      date_of_birth: data.dateOfBirth,
+      registration_number: data.registrationNumber,
+    })
   }
 
   public async delete(id: string): Promise<void> {
