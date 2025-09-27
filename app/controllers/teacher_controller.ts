@@ -13,7 +13,7 @@ export default class TeacherController {
 
     const createTeacherService = makeCreateTeacherService()
 
-    const user = await createTeacherService.execute({
+    await createTeacherService.execute({
       name: payload.name,
       email: payload.email,
       password: payload.password,
@@ -21,7 +21,7 @@ export default class TeacherController {
       registrationNumber: payload.registrationNumber,
     })
 
-    return response.status(201).json(user)
+    return response.status(201).json({ message: 'Cadastro realizado com sucesso.' })
   }
 
   public async show({ auth, params, response }: HttpContext) {

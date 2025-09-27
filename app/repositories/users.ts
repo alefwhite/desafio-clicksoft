@@ -1,7 +1,7 @@
 import User from '#models/user'
 
 export interface UserRepository {
-  create(data: User): Promise<User>
+  create(data: User): Promise<void>
   findByEmail(email: string): Promise<User | null>
   findById(id: string): Promise<User | null>
   findByRegistrationNumber(registrationNumber: number): Promise<User | null>
@@ -10,10 +10,10 @@ export interface UserRepository {
 }
 
 export class UserDatabase implements UserRepository {
-  public async create(data: User): Promise<User> {
-    const user = await User.create(data)
-    return user
+  public async create(data: User): Promise<void> {
+    await User.create(data)
   }
+
   public async findByEmail(email: string): Promise<User | null> {
     const user = await User.findBy('email', email)
     return user
