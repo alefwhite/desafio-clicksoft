@@ -38,8 +38,8 @@ export default class User extends compose(BaseModel, AuthFinder) {
   @column({ columnName: 'user_type' })
   declare userType: UserType
 
-  @column({ columnName: 'date_of_birth' })
-  declare dateOfBirth: string
+  @column.date({ columnName: 'date_of_birth' })
+  declare dateOfBirth: DateTime
 
   @column({ columnName: 'registration_number' })
   declare registrationNumber: number

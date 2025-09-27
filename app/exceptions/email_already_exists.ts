@@ -1,6 +1,6 @@
 import { Exception } from '@adonisjs/core/exceptions'
 
-export default class ErrorEmailAlreadyExists extends Exception {
+export default class EmailAlreadyExistsException extends Exception {
   constructor() {
     super()
     this.status = 400

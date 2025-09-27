@@ -1,12 +1,14 @@
-import ErrorEmailAlreadyExists from '#exceptions/error_email_already_exists'
+import EmailAlreadyExistsException from '#exceptions/email_already_exists'
+import RegistrationNumberAlreadyExistsException from '#exceptions/registration_number_already_exists'
 import User, { UserType } from '#models/user'
 import { UserRepository } from '../repositories/users.js'
+import { DateTime } from 'luxon'
 
 interface CreateTeacherDTO {
   name: string
   email: string
   password: string
-  dateOfBirth: string
+  dateOfBirth: Date
   registrationNumber: number
 }
 
@@ -17,7 +19,15 @@ export class CreateTeacherUseCase {
     const existingUserByEmail = await this.userRepository.findByEmail(data.email)
 
     if (existingUserByEmail) {
-      throw new ErrorEmailAlreadyExists()
+      throw new EmailAlreadyExistsException()
+    }
+
+    const existingUserByRegistrationNumber = await this.userRepository.findByRegistrationNumber(
+      data.registrationNumber
+    )
+
+    if (existingUserByRegistrationNumber) {
+      throw new RegistrationNumberAlreadyExistsException()
     }
 
     const user = new User()
@@ -26,7 +36,7 @@ export class CreateTeacherUseCase {
       name: data.name,
       email: data.email,
       password: data.password,
-      dateOfBirth: data.dateOfBirth,
+      dateOfBirth: DateTime.fromJSDate(data.dateOfBirth),
       registrationNumber: data.registrationNumber,
       userType: UserType.TEACHER,
     })

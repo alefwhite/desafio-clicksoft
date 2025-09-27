@@ -20,7 +20,9 @@ router.get('/health-check', async () => {
 const TeacherController = () => import('#controllers/teacher_controller')
 
 router.post('/teachers', [TeacherController, 'store'])
+router.put('/teachers/:id', [TeacherController, 'update']).use(middleware.auth({ guards: ['api'] }))
 
+// Sessions
 const SessionController = () => import('#controllers/session_controller')
 
 router.post('session', [SessionController, 'store'])
