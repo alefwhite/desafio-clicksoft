@@ -2,7 +2,7 @@ import ForbiddenException from '#exceptions/forbidden'
 import RoomNumberAlreadyExistsException from '#exceptions/room_number_already_exists'
 import Room from '#models/room'
 import { UserType } from '#models/user'
-import { RoomRepository } from '../repositories/room.js'
+import { RoomRepository } from '../../repositories/room.js'
 
 interface CreateRoomDTO {
   roomNumber: number

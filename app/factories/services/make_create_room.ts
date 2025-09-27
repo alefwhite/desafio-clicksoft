@@ -1,4 +1,4 @@
-import { CreateRoomService } from '#services/create_room'
+import { CreateRoomService } from '#services/room/create_room'
 import { RoomDatabase } from '../../repositories/room.js'
 
 export const makeCreateRoomService = () => {

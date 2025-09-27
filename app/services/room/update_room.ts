@@ -1,6 +1,6 @@
 import ForbiddenException from '#exceptions/forbidden'
 import RoomNotFoundException from '#exceptions/room_not_found'
-import { RoomRepository } from '../repositories/room.js'
+import { RoomRepository } from '../../repositories/room.js'
 
 interface UpdateRoomDTO {
   roomId: string

@@ -1,11 +1,12 @@
 import ForbiddenException from '#exceptions/forbidden'
 import UserNotFoundException from '#exceptions/user_not_found'
-import { UserRepository } from '../repositories/users.js'
+import User from '#models/user'
+import { UserRepository } from '../../repositories/users.js'
 
-export class DeleteTeacherService {
+export class ShowTeacherService {
   constructor(private readonly userRepository: UserRepository) {}
 
-  async execute(id: string, teacherId: string): Promise<void> {
+  async execute(id: string, teacherId: string): Promise<User> {
     const teacher = await this.userRepository.findById(id)
 
     if (!teacher) {
@@ -16,6 +17,6 @@ export class DeleteTeacherService {
       throw new ForbiddenException()
     }
 
-    await this.userRepository.delete(id)
+    return teacher
   }
 }

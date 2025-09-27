@@ -1,4 +1,4 @@
-import { DeleteRoomService } from '#services/delete_room'
+import { DeleteRoomService } from '#services/room/delete_room'
 import { RoomDatabase } from '../../repositories/room.js'
 
 export const makeDeleteRoomService = () => {

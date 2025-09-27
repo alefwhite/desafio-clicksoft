@@ -1,7 +1,7 @@
 import EmailAlreadyExistsException from '#exceptions/email_already_exists'
 import ForbiddenException from '#exceptions/forbidden'
 import UserNotFoundException from '#exceptions/user_not_found'
-import { UserRepository } from '../repositories/users.js'
+import { UserRepository } from '../../repositories/users.js'
 
 interface UpdateTeacherDTO {
   id: string

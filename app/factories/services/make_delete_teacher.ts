@@ -1,4 +1,4 @@
-import { DeleteTeacherService } from '#services/delete_teacher'
+import { DeleteTeacherService } from '#services/teacher/delete_teacher'
 import { UserDatabase } from '../../repositories/users.js'
 
 export const makeDeleteTeacherService = () => {

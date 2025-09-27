@@ -1,7 +1,7 @@
 import EmailAlreadyExistsException from '#exceptions/email_already_exists'
 import RegistrationNumberAlreadyExistsException from '#exceptions/registration_number_already_exists'
 import User, { UserType } from '#models/user'
-import { UserRepository } from '../repositories/users.js'
+import { UserRepository } from '../../repositories/users.js'
 import { DateTime } from 'luxon'
 
 interface CreateTeacherDTO {

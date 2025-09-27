@@ -1,4 +1,4 @@
-import { CreateTeacherService } from '#services/create_teacher'
+import { CreateTeacherService } from '#services/teacher/create_teacher'
 import { UserDatabase } from '../../repositories/users.js'
 
 export const makeCreateTeacherService = () => {
