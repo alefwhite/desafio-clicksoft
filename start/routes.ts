@@ -31,3 +31,8 @@ const SessionController = () => import('#controllers/session_controller')
 
 router.post('session', [SessionController, 'store'])
 router.delete('session', [SessionController, 'destroy']).use(middleware.auth({ guards: ['api'] }))
+
+// Rooms
+const RoomController = () => import('#controllers/room_controller')
+
+router.post('/rooms', [RoomController, 'store']).use(middleware.auth({ guards: ['api'] }))
