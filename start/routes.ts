@@ -20,6 +20,7 @@ router.get('/health-check', async () => {
 const TeacherController = () => import('#controllers/teacher_controller')
 
 router.post('/teachers', [TeacherController, 'store'])
+router.get('/teachers/:id', [TeacherController, 'show']).use(middleware.auth({ guards: ['api'] }))
 router.put('/teachers/:id', [TeacherController, 'update']).use(middleware.auth({ guards: ['api'] }))
 router
   .delete('/teachers/:id', [TeacherController, 'destroy'])
