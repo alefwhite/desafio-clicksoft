@@ -1,7 +1,7 @@
 import type { HttpContext } from '@adonisjs/core/http'
-import { makeCreateTeacherUseCase } from '../factories/usecases/make_create_teacher_use_case.js'
 import { teacherValidator, updateTeacherValidator } from '#validators/teacher'
-import { makeUpdateTeacherUseCase } from '../factories/usecases/make_update_teacher_use_case.js'
+import { makeUpdateTeacherService } from '../factories/usecases/make_update_teacher_use_case.js'
+import { makeCreateTeacherService } from '../factories/usecases/make_create_teacher_use_case.js'
 
 export default class TeacherController {
   public async store({ request, response }: HttpContext) {
@@ -9,9 +9,9 @@ export default class TeacherController {
 
     const payload = await teacherValidator.validate(body)
 
-    const createTeacherUseCase = makeCreateTeacherUseCase()
+    const createTeacherService = makeCreateTeacherService()
 
-    const user = await createTeacherUseCase.execute({
+    const user = await createTeacherService.execute({
       name: payload.name,
       email: payload.email,
       password: payload.password,
@@ -29,9 +29,9 @@ export default class TeacherController {
     const payload = await updateTeacherValidator.validate(body)
     const teacher = auth.getUserOrFail()
 
-    const updateTeacherUseCase = makeUpdateTeacherUseCase()
+    const updateTeacherService = makeUpdateTeacherService()
 
-    await updateTeacherUseCase.execute({
+    await updateTeacherService.execute({
       id,
       teacherId: teacher.id,
       name: payload.name,

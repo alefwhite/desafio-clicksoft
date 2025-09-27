@@ -1,6 +1,6 @@
 import { UserDatabase } from '../../repositories/users.js'
-import { UpdateTeacherUseCase } from '../../usecases/update_teacher.js'
+import { UpdateTeacherService } from '#services/update_teacher'
 
-export const makeUpdateTeacherUseCase = () => {
-  return new UpdateTeacherUseCase(new UserDatabase())
+export const makeUpdateTeacherService = () => {
+  return new UpdateTeacherService(new UserDatabase())
 }

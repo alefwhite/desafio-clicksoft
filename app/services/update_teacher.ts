@@ -13,7 +13,7 @@ interface UpdateTeacherDTO {
   registrationNumber?: number
 }
 
-export class UpdateTeacherUseCase {
+export class UpdateTeacherService {
   constructor(private readonly userRepository: UserRepository) {}
 
   public async execute({ id, teacherId, ...data }: UpdateTeacherDTO): Promise<void> {
