@@ -1,6 +1,6 @@
 # 🎓 Clicksoft - Sistema de Gestão Escolar
 
-> **Desafio Backend Node.js** - Sistema completo para gestão de professores, estudantes e salas de aula.
+> **Desafio Backend Node.js** - Sistema simples para gestão de professores, estudantes e salas de aula.
 
 ## 📋 Índice
 
