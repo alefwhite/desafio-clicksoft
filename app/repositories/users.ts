@@ -1,3 +1,4 @@
+import UserNotFoundException from '#exceptions/user_not_found'
 import User from '#models/user'
 
 interface EnrolledRoomInfo {
@@ -22,6 +23,7 @@ export interface UserRepository {
     data: { name: string; email: string; dateOfBirth: Date; registrationNumber: number }
   ): Promise<void>
   delete(id: string): Promise<void>
+  allocateRoomToStudent(userId: string, roomId: string): Promise<void>
 }
 
 export class UserDatabase implements UserRepository {
@@ -92,5 +94,15 @@ export class UserDatabase implements UserRepository {
       name: user.name,
       enrolledRooms: formattedRooms,
     }
+  }
+
+  public async allocateRoomToStudent(userId: string, roomId: string): Promise<void> {
+    const user = await User.find(userId)
+
+    if (!user) {
+      throw new UserNotFoundException('Usuário não encontrado.')
+    }
+
+    await user.related('enrolledRooms').attach([roomId])
   }
 }

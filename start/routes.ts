@@ -31,6 +31,9 @@ router.put('/teachers/:id', [TeacherController, 'update']).use(middleware.auth({
 router
   .delete('/teachers/:id', [TeacherController, 'destroy'])
   .use(middleware.auth({ guards: ['api'] }))
+router
+  .post('/teachers/allocate-student', [TeacherController, 'allocateStudent'])
+  .use(middleware.auth({ guards: ['api'] }))
 
 // Students
 const StudentController = () => import('#controllers/student_controller')
