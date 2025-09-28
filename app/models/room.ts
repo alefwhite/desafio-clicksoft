@@ -40,5 +40,5 @@ export default class Room extends BaseModel {
     pivotRelatedForeignKey: 'user_id',
     pivotTimestamps: true,
   })
-  declare students: ManyToMany<typeof User>
+  declare students: ManyToMany<any>
 }

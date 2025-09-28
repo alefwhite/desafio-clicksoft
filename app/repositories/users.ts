@@ -23,7 +23,7 @@ export interface UserRepository {
     data: { name: string; email: string; dateOfBirth: Date; registrationNumber: number }
   ): Promise<void>
   delete(id: string): Promise<void>
-  allocateRoomToStudent(userId: string, roomId: string): Promise<void>
+  allocateRoomToStudent(data: { studentId: string; roomId: string }): Promise<void>
 }
 
 export class UserDatabase implements UserRepository {
@@ -96,13 +96,13 @@ export class UserDatabase implements UserRepository {
     }
   }
 
-  public async allocateRoomToStudent(userId: string, roomId: string): Promise<void> {
-    const user = await User.find(userId)
+  public async allocateRoomToStudent(data: { studentId: string; roomId: string }): Promise<void> {
+    const user = await User.find(data.studentId)
 
     if (!user) {
-      throw new UserNotFoundException('Usuário não encontrado.')
+      throw new UserNotFoundException('Estudante não encontrado.')
     }
 
-    await user.related('enrolledRooms').attach([roomId])
+    await user.related('enrolledRooms').attach([data.roomId])
   }
 }

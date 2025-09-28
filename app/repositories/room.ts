@@ -9,6 +9,7 @@ export interface RoomRepository {
     data: { roomNumber: number; capacity: number; disponibility: boolean }
   ): Promise<void>
   delete(id: string): Promise<void>
+  findByIdWithStudents(id: string): Promise<Room | null>
 }
 
 export class RoomDatabase implements RoomRepository {
@@ -18,6 +19,11 @@ export class RoomDatabase implements RoomRepository {
 
   public async findById(id: string): Promise<Room | null> {
     const room = await Room.find(id)
+    return room
+  }
+
+  public async findByIdWithStudents(id: string): Promise<Room | null> {
+    const room = await Room.query().where('id', id).preload('students').first()
     return room
   }
 
