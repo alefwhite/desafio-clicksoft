@@ -13,6 +13,17 @@ export default class HttpExceptionHandler extends ExceptionHandler {
    * response to the client
    */
   async handle(error: unknown, ctx: HttpContext) {
+    /**
+     * Handle custom exceptions from middlewares
+     */
+    if (error instanceof Error && 'status' in error) {
+      const customError = error as any
+      return ctx.response.status(customError.status || 500).json({
+        message: customError.message,
+        code: customError.code || 'E_EXCEPTION',
+      })
+    }
+
     return super.handle(error, ctx)
   }
 
