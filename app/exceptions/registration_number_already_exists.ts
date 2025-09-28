@@ -4,7 +4,7 @@ export default class RegistrationNumberAlreadyExistsException extends Exception 
   constructor() {
     super()
     this.status = 400
-    this.message = 'Número de matrícula já existe.'
+    this.message = 'Número de matrícula já está em uso.'
     this.code = 'E_REGISTRATION_NUMBER_ALREADY_EXISTS'
   }
 }

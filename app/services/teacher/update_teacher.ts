@@ -1,5 +1,6 @@
 import EmailAlreadyExistsException from '#exceptions/email_already_exists'
 import ForbiddenException from '#exceptions/forbidden'
+import RegistrationNumberAlreadyExistsException from '#exceptions/registration_number_already_exists'
 import UserNotFoundException from '#exceptions/user_not_found'
 import { UserRepository } from '../../repositories/users.js'
 
@@ -31,6 +32,16 @@ export class UpdateTeacherService {
 
       if (userWithSameEmail) {
         throw new EmailAlreadyExistsException()
+      }
+    }
+
+    if (data.registrationNumber && data.registrationNumber !== teacher.registrationNumber) {
+      const existingUserByRegistrationNumber = await this.userRepository.findByRegistrationNumber(
+        data.registrationNumber
+      )
+
+      if (existingUserByRegistrationNumber) {
+        throw new RegistrationNumberAlreadyExistsException()
       }
     }
 
