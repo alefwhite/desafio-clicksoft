@@ -27,15 +27,15 @@ export default class Room extends BaseModel {
 
   // Relação: Room belongs to User (professor)
   @belongsTo(() => User, {
-    foreignKey: 'id',
+    foreignKey: 'createdBy',
   })
   declare teacher: BelongsTo<typeof User>
 
   // Relação: Room many-to-many with Users (estudantes)
   @manyToMany(() => User, {
-    pivotTable: 'room_user',
-    localKey: 'roomNumber',
-    pivotForeignKey: 'room_number',
+    pivotTable: 'rooms_users',
+    localKey: 'id',
+    pivotForeignKey: 'room_id',
     relatedKey: 'id',
     pivotRelatedForeignKey: 'user_id',
     pivotTimestamps: true,

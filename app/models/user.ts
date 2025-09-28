@@ -58,14 +58,31 @@ export default class User extends compose(BaseModel, AuthFinder) {
 
   // Relação: User many-to-many with Rooms (para estudantes)
   @manyToMany(() => Room, {
-    pivotTable: 'room_user',
+    pivotTable: 'rooms_users',
     localKey: 'id',
     pivotForeignKey: 'user_id',
-    relatedKey: 'roomNumber',
-    pivotRelatedForeignKey: 'room_number',
+    relatedKey: 'id',
+    pivotRelatedForeignKey: 'room_id',
     pivotTimestamps: true,
   })
-  declare userRooms: ManyToMany<any>
+  declare enrolledRooms: ManyToMany<any>
+
+  // Método para customizar serialização baseado no tipo do usuário
+  public serialize() {
+    const data = super.serialize()
+
+    // Se for estudante, remove a propriedade 'rooms' (que é para professores)
+    if (this.userType === UserType.STUDENT) {
+      delete data.rooms
+    }
+
+    // Se for professor, remove a propriedade 'enrolledRooms' (que é para estudantes)
+    if (this.userType === UserType.TEACHER) {
+      delete data.enrolledRooms
+    }
+
+    return data
+  }
 
   static accessTokens = DbAccessTokensProvider.forModel(User)
 }
