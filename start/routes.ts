@@ -16,6 +16,12 @@ router.get('/health-check', async () => {
   }
 })
 
+// Sessions
+const SessionController = () => import('#controllers/session_controller')
+
+router.post('session', [SessionController, 'store'])
+router.delete('session', [SessionController, 'destroy']).use(middleware.auth({ guards: ['api'] }))
+
 // Teachers
 const TeacherController = () => import('#controllers/teacher_controller')
 
@@ -26,11 +32,18 @@ router
   .delete('/teachers/:id', [TeacherController, 'destroy'])
   .use(middleware.auth({ guards: ['api'] }))
 
-// Sessions
-const SessionController = () => import('#controllers/session_controller')
+// Students
+const StudentController = () => import('#controllers/student_controller')
 
-router.post('session', [SessionController, 'store'])
-router.delete('session', [SessionController, 'destroy']).use(middleware.auth({ guards: ['api'] }))
+router.post('/students', [StudentController, 'store'])
+router.get('/students/:id', [StudentController, 'show']).use(middleware.auth({ guards: ['api'] }))
+router.put('/students/:id', [StudentController, 'update']).use(middleware.auth({ guards: ['api'] }))
+router
+  .delete('/students/:id', [StudentController, 'destroy'])
+  .use(middleware.auth({ guards: ['api'] }))
+
+// My Rooms - Minhas salas (para o estudante logado)
+router.get('/my-rooms', [StudentController, 'myRooms']).use(middleware.auth({ guards: ['api'] }))
 
 // Rooms
 const RoomController = () => import('#controllers/room_controller')

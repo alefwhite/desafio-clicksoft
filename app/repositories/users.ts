@@ -1,9 +1,21 @@
 import User from '#models/user'
 
+interface EnrolledRoomInfo {
+  teacherName: string
+  roomNumber: number
+}
+
+export interface FormattedUserWithRooms {
+  name: string
+  enrolledRooms: EnrolledRoomInfo[]
+}
+
 export interface UserRepository {
   create(data: User): Promise<void>
   findByEmail(email: string): Promise<User | null>
   findById(id: string): Promise<User | null>
+  findByIdWithRooms(id: string): Promise<User | null>
+  findMyEnrolledRooms(id: string): Promise<FormattedUserWithRooms | null>
   findByRegistrationNumber(registrationNumber: number): Promise<User | null>
   update(
     id: string,
@@ -23,6 +35,11 @@ export class UserDatabase implements UserRepository {
   }
 
   public async findById(id: string): Promise<User | null> {
+    const user = await User.find(id)
+    return user
+  }
+
+  public async findByIdWithRooms(id: string): Promise<User | null> {
     const user = await User.query().where('id', id).preload('rooms').first()
     return user
   }
@@ -46,5 +63,34 @@ export class UserDatabase implements UserRepository {
 
   public async delete(id: string): Promise<void> {
     await User.query().where('id', id).delete()
+  }
+
+  public async findMyEnrolledRooms(userId: string): Promise<FormattedUserWithRooms | null> {
+    const user = await User.query()
+      .select('id', 'name')
+      .where({
+        id: userId,
+        user_type: 'student',
+      })
+      .preload('enrolledRooms', (roomQuery) => {
+        roomQuery.preload('teacher', (teacherQuery) => {
+          teacherQuery.select(['id', 'name'])
+        })
+      })
+      .first()
+
+    if (!user) {
+      return null
+    }
+
+    const formattedRooms: EnrolledRoomInfo[] = user.enrolledRooms.map((room) => ({
+      roomNumber: room.roomNumber,
+      teacherName: room.teacher.name,
+    }))
+
+    return {
+      name: user.name,
+      enrolledRooms: formattedRooms,
+    }
   }
 }

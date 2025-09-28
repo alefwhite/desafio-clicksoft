@@ -1,22 +1,21 @@
 import ForbiddenException from '#exceptions/forbidden'
 import UserNotFoundException from '#exceptions/user_not_found'
-import User from '#models/user'
 import { UserRepository } from '../../repositories/users.js'
 
-export class ShowTeacherService {
+export class DeleteStudentService {
   constructor(private readonly userRepository: UserRepository) {}
 
-  async execute(id: string, teacherId: string): Promise<User> {
-    const teacher = await this.userRepository.findByIdWithRooms(id)
+  async execute(id: string, studentId: string): Promise<void> {
+    const student = await this.userRepository.findById(id)
 
-    if (!teacher) {
+    if (!student) {
       throw new UserNotFoundException()
     }
 
-    if (teacherId !== teacher.id) {
+    if (studentId !== student.id) {
       throw new ForbiddenException()
     }
 
-    return teacher
+    await this.userRepository.delete(id)
   }
 }
