@@ -26,6 +26,7 @@ router.delete('session', [SessionController, 'destroy']).use(middleware.auth({ g
 const TeacherController = () => import('#controllers/teacher_controller')
 
 router.post('/teachers', [TeacherController, 'store'])
+
 router
   .get('/teachers/:id', [TeacherController, 'show'])
   .use([middleware.auth({ guards: ['api'] }), middleware.teacher()])
@@ -67,9 +68,15 @@ const RoomController = () => import('#controllers/room_controller')
 router
   .post('/rooms', [RoomController, 'store'])
   .use([middleware.auth({ guards: ['api'] }), middleware.teacher()])
+
 router
   .put('/rooms/:id', [RoomController, 'update'])
   .use([middleware.auth({ guards: ['api'] }), middleware.teacher()])
+
 router
   .delete('/rooms/:id', [RoomController, 'destroy'])
+  .use([middleware.auth({ guards: ['api'] }), middleware.teacher()])
+
+router
+  .get('/rooms/:id/students', [RoomController, 'listStudentsInRoom'])
   .use([middleware.auth({ guards: ['api'] }), middleware.teacher()])

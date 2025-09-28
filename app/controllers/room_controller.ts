@@ -3,6 +3,7 @@ import { makeCreateRoomService } from '../factories/services/make_create_room.js
 import { roomValidator, updateRoomValidator } from '#validators/room'
 import { makeDeleteRoomService } from '../factories/services/make_delete_room.js'
 import { makeUpdateRoomService } from '../factories/services/make_update_room.js'
+import { makeListStudentsInTheRoomService } from '../factories/services/make_list_students_in_the_room.js'
 
 export default class RoomsController {
   async store({ request, response, auth }: HttpContext) {
@@ -54,5 +55,19 @@ export default class RoomsController {
     await deleteRoomService.execute(id, user.id)
 
     return response.status(200).noContent()
+  }
+
+  async listStudentsInRoom({ auth, params, response }: HttpContext) {
+    const { id: roomId } = params
+    const teacher = auth.getUserOrFail()
+
+    const listStudentsService = makeListStudentsInTheRoomService()
+
+    const students = await listStudentsService.execute({
+      roomId,
+      createdBy: teacher.id,
+    })
+
+    return response.status(200).json(students)
   }
 }

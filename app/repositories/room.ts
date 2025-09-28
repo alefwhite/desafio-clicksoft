@@ -10,6 +10,7 @@ export interface RoomRepository {
   ): Promise<void>
   delete(id: string): Promise<void>
   findByIdWithStudents(id: string): Promise<Room | null>
+  findStudentsInRoom(data: { createdBy: string; roomId: string }): Promise<Room[]>
 }
 
 export class RoomDatabase implements RoomRepository {
@@ -51,5 +52,13 @@ export class RoomDatabase implements RoomRepository {
       .andWhere('created_by', createdBy)
       .first()
     return room
+  }
+
+  public async findStudentsInRoom(data: { createdBy: string; roomId: string }): Promise<Room[]> {
+    const rooms = await Room.query()
+      .where('created_by', data.createdBy)
+      .andWhere('id', data.roomId)
+      .preload('students')
+    return rooms
   }
 }
